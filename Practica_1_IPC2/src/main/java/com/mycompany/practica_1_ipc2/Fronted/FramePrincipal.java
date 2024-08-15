@@ -4,6 +4,8 @@
  */
 package com.mycompany.practica_1_ipc2.Fronted;
 
+import java.awt.Dimension;
+
 /**
  *
  * @author gabrielh
@@ -127,9 +129,25 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        InterlFrameSolicitud interS = new InterlFrameSolicitud();
-        jDesktop.add(interS);
-        interS.setVisible(true);
+         // Crear una instancia del JInternalFrame
+    InterlFrameSolicitud interS = new InterlFrameSolicitud();
+    
+    // Ajustar el tamaño del JInternalFrame para que se ajuste a su contenido
+    interS.pack();
+    
+    // Añadir el JInternalFrame al JDesktopPane
+    jDesktop.add(interS);
+    
+    // Hacer visible el JInternalFrame
+    interS.setVisible(true);
+    
+    // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
+    jDesktop.setPreferredSize(new Dimension(interS.getWidth(), interS.getHeight()));
+    
+    // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
+    this.pack();
+
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
