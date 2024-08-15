@@ -69,6 +69,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Movimiento");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Tarjeta");
@@ -153,6 +158,27 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        // TODO add your handling code here:
+        InterlFrameMovimiento interM = new InterlFrameMovimiento();
+    
+    // Ajustar el tamaño del JInternalFrame para que se ajuste a su contenido
+    interM.pack();
+    
+    // Añadir el JInternalFrame al JDesktopPane
+    jDesktop.add(interM);
+    
+    // Hacer visible el JInternalFrame
+    interM.setVisible(true);
+    
+    // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
+    jDesktop.setPreferredSize(new Dimension(interM.getWidth(), interM.getHeight()));
+    
+    // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
+    this.pack();
+        
+    }//GEN-LAST:event_jMenu2MouseClicked
 
     /**
      * @param args the command line arguments
