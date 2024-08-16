@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 /**
  *
@@ -17,7 +18,7 @@ import java.text.DecimalFormat;
  */
 public class Solicitudes {
     private InterlFrameSolicitud interSoli;
-    private boolean estado;
+    private boolean estado = true;
     private String nombre;
     private String direccion;
     private String tipo;
@@ -50,18 +51,27 @@ public class Solicitudes {
             System.out.println("Nombre: " + nombre);
             System.out.println("Salario: " + salarioFormateado);
             System.out.println("Tipo: "+tipo);*/
+         guardarSolicitudes();
     }
     
 
     public void guardarSolicitudes(){
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        String salarioFormateado = decimalFormat.format(salario);
-        String insert = "INSERT INTO solicitud (fecha_solicitud, tipo, nombre, salario, direccion, estado_solicitud) "
+        // Convertir el salario a double
+
+            // Configurar DecimalFormat para usar punto como separador decimal
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+            symbols.setDecimalSeparator('.'); // Establece el punto como separador decimal
+
+            DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
+
+            // Formatear el salario
+            String salarioFormateado = decimalFormat.format(salario);
+
+        String insert = "INSERT INTO solicitud (fecha_solicitud, tipo, nombre, salario, direccion) "
                 + "values('" + fecha + "','"
                 + tipo + "','" + nombre + "','"
                 + salarioFormateado + "','"
-                + direccion + "','"
-                + estado + "')";
+                + direccion + "')";
         try {
 
             Statement statementInsert = connection.createStatement();

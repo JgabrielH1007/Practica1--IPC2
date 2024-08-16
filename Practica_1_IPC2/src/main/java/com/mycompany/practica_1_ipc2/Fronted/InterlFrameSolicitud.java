@@ -30,7 +30,7 @@ public class InterlFrameSolicitud extends javax.swing.JInternalFrame {
 
         // Obtener la fecha actual y formatearla
         LocalDate fechaActual = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         String fechaFormateada = fechaActual.format(formatter);
 
         // Establecer la fecha formateada en el JTextField
