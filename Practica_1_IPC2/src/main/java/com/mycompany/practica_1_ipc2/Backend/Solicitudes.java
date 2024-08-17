@@ -7,6 +7,8 @@ package com.mycompany.practica_1_ipc2.Backend;
 import com.mycompany.practica_1_ipc2.Fronted.InterlFrameSolicitud;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
@@ -52,33 +54,65 @@ public class Solicitudes {
             System.out.println("Salario: " + salarioFormateado);
             System.out.println("Tipo: "+tipo);*/
          guardarSolicitudes();
+         consultarNumeroSolicitudMasReciente();
     }
     
 
-    public void guardarSolicitudes(){
-        // Convertir el salario a double
+     public void guardarSolicitudes() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.'); // Establece el punto como separador decimal
 
-            // Configurar DecimalFormat para usar punto como separador decimal
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-            symbols.setDecimalSeparator('.'); // Establece el punto como separador decimal
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
 
-            DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
-
-            // Formatear el salario
-            String salarioFormateado = decimalFormat.format(salario);
+        // Formatear el salario
+        String salarioFormateado = decimalFormat.format(salario);
 
         String insert = "INSERT INTO solicitud (fecha_solicitud, tipo, nombre, salario, direccion) "
-                + "values('" + fecha + "','"
-                + tipo + "','" + nombre + "','"
-                + salarioFormateado + "','"
-                + direccion + "')";
-        try {
-
-            Statement statementInsert = connection.createStatement();
-            int rowsAffected = statementInsert.executeUpdate(insert);
+                + "VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
+            preparedStatement.setString(1, fecha);
+            preparedStatement.setString(2, tipo);
+            preparedStatement.setString(3, nombre);
+            preparedStatement.setString(4, salarioFormateado);
+            preparedStatement.setString(5, direccion);
+            
+            int rowsAffected = preparedStatement.executeUpdate();
             System.out.println("Rows affected> " + rowsAffected);
         } catch (SQLException e) {
             System.out.println("Error al insertar a la DB");
+            e.printStackTrace();
+        }
+    }
+    
+    public void consultarNumeroSolicitudMasReciente() {
+        String query = "SELECT numero_solicitud FROM solicitud "
+                     + "WHERE fecha_solicitud = (SELECT MAX(fecha_solicitud) "
+                     + "FROM solicitud "
+                     + "WHERE fecha_solicitud = ? "
+                     + "AND tipo = ? "
+                     + "AND nombre = ? "
+                     + "AND salario = ? "
+                     + "AND direccion = ?) "
+                     + "ORDER BY fecha_solicitud DESC "
+                     + "LIMIT 1";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, fecha);
+            preparedStatement.setString(2, tipo);
+            preparedStatement.setString(3, nombre);
+            preparedStatement.setString(4, new DecimalFormat("#0.00").format(salario));
+            preparedStatement.setString(5, direccion);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int numeroSolicitud = resultSet.getInt("numero_solicitud");
+                    System.out.println("Número de solicitud más reciente: " + numeroSolicitud);
+                } else {
+                    System.out.println("No se encontraron solicitudes con los atributos proporcionados.");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al consultar la DB");
             e.printStackTrace();
         }
     }
