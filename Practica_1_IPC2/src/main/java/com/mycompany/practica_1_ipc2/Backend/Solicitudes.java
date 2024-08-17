@@ -12,7 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.Random;
+
 import java.text.DecimalFormatSymbols;
+
+import java.util.Random;
+
 
 /**
  *
@@ -46,6 +51,7 @@ public class Solicitudes {
             System.out.println("Error al connectar a la DB");
             e.printStackTrace();
         }
+
          /*   // Formatear el salario
         String salarioFormateado = decimalFormat.format(salario);
          System.out.println("Dirección: " + direccion);
@@ -53,31 +59,57 @@ public class Solicitudes {
             System.out.println("Nombre: " + nombre);
             System.out.println("Salario: " + salarioFormateado);
             System.out.println("Tipo: "+tipo);*/
-         guardarSolicitudes();
+         guardarSolicitud();
          consultarNumeroSolicitudMasReciente();
+
     }
     
+    public int generarNumeroSolicitud() {
+        Random random = new Random();
+        return 100000 + random.nextInt(900000); // Genera un número de 6 dígitos
+    }
+    
+    
+    public boolean verificarNumeroSolicitud(int numeroSolicitud) {
+        String query = "SELECT COUNT(*) FROM solicitud WHERE numero_solicitud = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, numeroSolicitud);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) == 0; // Retorna true si no existe el número
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al verificar el número de solicitud en la DB");
+            e.printStackTrace();
+        }
+        return false; // En caso de error, consideramos que no está disponible
+    }
 
-     public void guardarSolicitudes() {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.'); // Establece el punto como separador decimal
+    public void guardarSolicitud() {
+        
+        boolean numeroDisponible = false;
 
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00", symbols);
+        // Generar y verificar el número de solicitud
+        while (!numeroDisponible) {
+          
+            numeroDisponible = verificarNumeroSolicitud(generarNumeroSolicitud());
+        }
 
-        // Formatear el salario
-        String salarioFormateado = decimalFormat.format(salario);
-
-        String insert = "INSERT INTO solicitud (fecha_solicitud, tipo, nombre, salario, direccion) "
-                + "VALUES (?, ?, ?, ?, ?)";
+        String insert = "INSERT INTO solicitud (numero_solicitud, fecha_solicitud, tipo, nombre, salario, direccion) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
-            preparedStatement.setString(1, fecha);
-            preparedStatement.setString(2, tipo);
-            preparedStatement.setString(3, nombre);
-            preparedStatement.setString(4, salarioFormateado);
-            preparedStatement.setString(5, direccion);
-            
+            preparedStatement.setInt(1, generarNumeroSolicitud());
+            preparedStatement.setString(2, fecha);
+            preparedStatement.setString(3, tipo);
+            preparedStatement.setString(4, nombre);
+            preparedStatement.setDouble(5, salario);
+            preparedStatement.setString(6, direccion);
+
+
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println("Rows affected> " + rowsAffected);
+            System.out.println("Número de solicitud insertado: " + generarNumeroSolicitud());
         } catch (SQLException e) {
             System.out.println("Error al insertar a la DB");
             e.printStackTrace();
