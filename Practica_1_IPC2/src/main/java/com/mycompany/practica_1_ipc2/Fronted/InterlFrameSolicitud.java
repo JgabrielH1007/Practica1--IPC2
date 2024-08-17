@@ -246,8 +246,10 @@ public class InterlFrameSolicitud extends javax.swing.JInternalFrame {
             
             // Imprimir para verificar
             Solicitudes solicitud = new Solicitudes(this, nombre, direccion, tipo,fecha, valorSalario);
-
-            // Aquí puedes continuar con la lógica de guardado o procesamiento
+            JOptionPane.showMessageDialog(null, "Número de solicitud insertado: " + solicitud.getNumeroSolicitud(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            if (this != null) {
+                this.dispose();
+            }
         } catch (NumberFormatException e) {
             // Mostrar un mensaje de error si el formato del salario es incorrecto
             JOptionPane.showMessageDialog(null, "El formato del salario es incorrecto. Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);

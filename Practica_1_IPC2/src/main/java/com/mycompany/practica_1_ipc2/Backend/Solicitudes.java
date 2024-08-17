@@ -17,6 +17,7 @@ import java.util.Random;
 import java.text.DecimalFormatSymbols;
 
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -34,44 +35,34 @@ public class Solicitudes {
     private static final String URL_MYSQL = "jdbc:mysql://localhost:3306/control_entidad_bancaria";
     private static final String USER = "root";
     private static final String PASSWORD = "1007";
-     private Connection connection;
-    
-    public Solicitudes(InterlFrameSolicitud interSoli, String nombre, String direccion, String tipo, String fecha, double salario){
+    private Connection connection;
+    private int numeroSolicitud;
+
+    public Solicitudes(InterlFrameSolicitud interSoli, String nombre, String direccion, String tipo, String fecha, double salario) {
         this.interSoli = interSoli;
         this.nombre = nombre;
         this.direccion = direccion;
         this.tipo = tipo;
         this.fecha = fecha;
         this.salario = salario;
-        //DecimalFormat decimalFormat = new DecimalFormat("#0.00");      
+
         try {
             connection = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
-            System.out.println("Esquema: " + connection.getSchema());
+            System.out.println("Conexión establecida con éxito.");
+            guardarSolicitud();
         } catch (SQLException e) {
-            System.out.println("Error al connectar a la DB");
+            JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-
-         /*   // Formatear el salario
-        String salarioFormateado = decimalFormat.format(salario);
-         System.out.println("Dirección: " + direccion);
-            System.out.println("Fecha: " + fecha);
-            System.out.println("Nombre: " + nombre);
-            System.out.println("Salario: " + salarioFormateado);
-            System.out.println("Tipo: "+tipo);*/
-         guardarSolicitud();
-         consultarNumeroSolicitudMasReciente();
-
     }
-    
+
     public int generarNumeroSolicitud() {
         Random random = new Random();
         return 100000 + random.nextInt(900000); // Genera un número de 6 dígitos
     }
-    
-    
+
     public boolean verificarNumeroSolicitud(int numeroSolicitud) {
-        String query = "SELECT COUNT(*) FROM solicitud WHERE numero_solicitud = ?";
+        String query = "SELECT COUNT(*) FROM solicitud_nueva WHERE numero_solicitud = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, numeroSolicitud);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -80,73 +71,49 @@ public class Solicitudes {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error al verificar el número de solicitud en la DB");
+            JOptionPane.showMessageDialog(null, "Error al verificar el número de solicitud en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
         return false; // En caso de error, consideramos que no está disponible
     }
 
     public void guardarSolicitud() {
-        
         boolean numeroDisponible = false;
 
-        // Generar y verificar el número de solicitud
+        // Generar y verificar el número de solicitud hasta que sea único
         while (!numeroDisponible) {
-          
-            numeroDisponible = verificarNumeroSolicitud(generarNumeroSolicitud());
+            numeroSolicitud = generarNumeroSolicitud();
+            numeroDisponible = verificarNumeroSolicitud(numeroSolicitud);
         }
 
-        String insert = "INSERT INTO solicitud (numero_solicitud, fecha_solicitud, tipo, nombre, salario, direccion) "
+        String insert = "INSERT INTO solicitud_nueva (numero_solicitud, fecha_solicitud, tipo, nombre, salario, direccion) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
-            preparedStatement.setInt(1, generarNumeroSolicitud());
+            preparedStatement.setInt(1, numeroSolicitud);
             preparedStatement.setString(2, fecha);
             preparedStatement.setString(3, tipo);
             preparedStatement.setString(4, nombre);
             preparedStatement.setDouble(5, salario);
             preparedStatement.setString(6, direccion);
 
-
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println("Rows affected> " + rowsAffected);
-            System.out.println("Número de solicitud insertado: " + generarNumeroSolicitud());
         } catch (SQLException e) {
-            System.out.println("Error al insertar a la DB");
+            JOptionPane.showMessageDialog(null, "Error al insertar en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+    }
+
+    public int getNumeroSolicitud() {
+        return numeroSolicitud;
     }
     
-    public void consultarNumeroSolicitudMasReciente() {
-        String query = "SELECT numero_solicitud FROM solicitud "
-                     + "WHERE fecha_solicitud = (SELECT MAX(fecha_solicitud) "
-                     + "FROM solicitud "
-                     + "WHERE fecha_solicitud = ? "
-                     + "AND tipo = ? "
-                     + "AND nombre = ? "
-                     + "AND salario = ? "
-                     + "AND direccion = ?) "
-                     + "ORDER BY fecha_solicitud DESC "
-                     + "LIMIT 1";
-        
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, fecha);
-            preparedStatement.setString(2, tipo);
-            preparedStatement.setString(3, nombre);
-            preparedStatement.setString(4, new DecimalFormat("#0.00").format(salario));
-            preparedStatement.setString(5, direccion);
-            
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    int numeroSolicitud = resultSet.getInt("numero_solicitud");
-                    System.out.println("Número de solicitud más reciente: " + numeroSolicitud);
-                } else {
-                    System.out.println("No se encontraron solicitudes con los atributos proporcionados.");
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al consultar la DB");
-            e.printStackTrace();
-        }
-    }
+    
+    
 }
+
+    
+    
+
+
   
