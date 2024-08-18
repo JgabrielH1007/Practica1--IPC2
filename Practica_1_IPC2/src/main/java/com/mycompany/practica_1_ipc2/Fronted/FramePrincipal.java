@@ -79,6 +79,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenu3.setText("Tarjeta");
 
         jMenuItem3.setText("Autorizar tarjeta");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem3);
 
         jMenuItem4.setText("Consultar tarjeta");
@@ -179,6 +184,26 @@ public class FramePrincipal extends javax.swing.JFrame {
     this.pack();
         
     }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        AutorizacionTarjetas autoT = new AutorizacionTarjetas();
+    
+    // Ajustar el tamaño del JInternalFrame para que se ajuste a su contenido
+    autoT.pack();
+    
+    // Añadir el JInternalFrame al JDesktopPane
+    jDesktop.add(autoT);
+    
+    // Hacer visible el JInternalFrame
+    autoT.setVisible(true);
+    
+    // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
+    jDesktop.setPreferredSize(new Dimension(autoT.getWidth(), autoT.getHeight()));
+    
+    // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
+    this.pack();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments

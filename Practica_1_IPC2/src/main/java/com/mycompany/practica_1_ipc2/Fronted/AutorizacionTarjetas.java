@@ -79,7 +79,7 @@ public class AutorizacionTarjetas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         numeroSolicitud = jtfNumeroTarjeta.getText();
         Administrador admin = new Administrador();
-        //admin.autorizarTarjeta(String numeroSolicitud);
+        admin.buscarSolicitud(numeroSolicitud);
         
     }//GEN-LAST:event_jbtAutorizarActionPerformed
 
