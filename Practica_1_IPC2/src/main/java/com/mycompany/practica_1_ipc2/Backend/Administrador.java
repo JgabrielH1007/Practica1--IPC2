@@ -8,15 +8,21 @@ package com.mycompany.practica_1_ipc2.Backend;
  *
  * @author gabrielh
  */
-public class Tarjeta {
-    private Administrador admin;
+public class Administrador {
     
-    public Tarjeta(Administrador admin){
+    public void autorizarTarjetas(){
         
     }
     
-    public void guardarTarjeta(){
+    public void buscarSolicitud(){
         
     }
+    
+    public void asignarNumeroTarjeta(){
+        
+    }
+    
+    
+    
     
 }
