@@ -245,7 +245,8 @@ public class InterlFrameSolicitud extends javax.swing.JInternalFrame {
                 }
             
             // Imprimir para verificar
-            Solicitudes solicitud = new Solicitudes(this, nombre, direccion, tipo,fecha, valorSalario);
+            Solicitudes solicitud = new Solicitudes(nombre, direccion, tipo,fecha, valorSalario);
+            solicitud.guardarSolicitud();
             JOptionPane.showMessageDialog(null, "Número de solicitud insertado: " + solicitud.getNumeroSolicitud(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
             if (this != null) {
                 this.dispose();

@@ -5,6 +5,7 @@
 package com.mycompany.practica_1_ipc2.Fronted;
 
 import com.mycompany.practica_1_ipc2.Backend.Administrador;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -80,6 +81,15 @@ public class AutorizacionTarjetas extends javax.swing.JInternalFrame {
         numeroSolicitud = jtfNumeroTarjeta.getText();
         Administrador admin = new Administrador();
         admin.buscarSolicitud(numeroSolicitud);
+        if (admin.isAutorizado() == true) {
+            JOptionPane.showMessageDialog(null,
+                "Se autorizó la tarjeta No:" + admin.getNumeroTarjeta(),
+                "SOLICITUD APROBADA",
+                JOptionPane.INFORMATION_MESSAGE);  
+            if (this != null) {
+                this.dispose();
+            }
+        }
         
     }//GEN-LAST:event_jbtAutorizarActionPerformed
 

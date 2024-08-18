@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
  * @author gabrielh
  */
 public class Solicitudes {
-    private InterlFrameSolicitud interSoli;
+   
     private boolean estado = true;
     private String nombre;
     private String direccion;
@@ -38,8 +38,8 @@ public class Solicitudes {
     private Connection connection;
     private int numeroSolicitud;
 
-    public Solicitudes(InterlFrameSolicitud interSoli, String nombre, String direccion, String tipo, String fecha, double salario) {
-        this.interSoli = interSoli;
+    public Solicitudes(String nombre, String direccion, String tipo, String fecha, double salario) {
+        
         this.nombre = nombre;
         this.direccion = direccion;
         this.tipo = tipo;
@@ -49,7 +49,7 @@ public class Solicitudes {
         try {
             connection = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
             System.out.println("Conexión establecida con éxito.");
-            guardarSolicitud();
+           
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
@@ -107,8 +107,29 @@ public class Solicitudes {
     public int getNumeroSolicitud() {
         return numeroSolicitud;
     }
+
+    public void setNumeroSolicitud(int numeroSolicitud) {
+        this.numeroSolicitud = numeroSolicitud;
+    }
     
+ 
     
+    public void actualizarEstadoSolicitud(boolean nuevoEstado) {
+        String update = "UPDATE solicitud_nueva SET estado_solicitud = ? WHERE numero_solicitud = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(update)) {
+            preparedStatement.setBoolean(1, nuevoEstado);
+            preparedStatement.setInt(2, numeroSolicitud);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Estado de solicitud actualizado.");
+            } else {
+                System.out.println("No se encontró la solicitud para actualizar.");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el estado de la solicitud.", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
     
 }
 
