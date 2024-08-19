@@ -89,21 +89,21 @@ public class Tarjeta {
     return nuevoNumero;
 }
 
-private String obtenerUltimoNumeroTarjeta(String prefix) {
-    String sql = "SELECT numero_tarjeta FROM tarjetas WHERE numero_tarjeta LIKE ? ORDER BY numero_tarjeta DESC LIMIT 1";
+    private String obtenerUltimoNumeroTarjeta(String prefix) {
+        String sql = "SELECT numero_tarjeta FROM tarjetas WHERE numero_tarjeta LIKE ? ORDER BY numero_tarjeta DESC LIMIT 1";
 
-    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-        pstmt.setString(1, prefix + "%");
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            return rs.getString("numero_tarjeta");
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, prefix + "%");
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("numero_tarjeta");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener el último número de tarjeta");
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        System.out.println("Error al obtener el último número de tarjeta");
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
     
     public void guardarTarjeta() {
         // Obtener el número de tarjeta

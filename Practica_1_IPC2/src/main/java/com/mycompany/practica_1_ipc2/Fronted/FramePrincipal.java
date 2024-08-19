@@ -31,12 +31,12 @@ public class FramePrincipal extends javax.swing.JFrame {
         jDesktop = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        itemSolicitud = new javax.swing.JMenuItem();
+        menuMovimiento = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        itemAutorizar = new javax.swing.JMenuItem();
+        itemConsultar = new javax.swing.JMenuItem();
+        ItemCancelar = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -58,49 +58,49 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jMenu1.setText("Solicitud");
 
-        jMenuItem1.setText("Crear solicitud");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        itemSolicitud.setText("Crear solicitud");
+        itemSolicitud.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                itemSolicitudActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(itemSolicitud);
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Movimiento");
-        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+        menuMovimiento.setText("Movimiento");
+        menuMovimiento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu2MouseClicked(evt);
+                menuMovimientoMouseClicked(evt);
             }
         });
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuMovimiento);
 
         jMenu3.setText("Tarjeta");
 
-        jMenuItem3.setText("Autorizar tarjeta");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        itemAutorizar.setText("Autorizar tarjeta");
+        itemAutorizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                itemAutorizarActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem3);
+        jMenu3.add(itemAutorizar);
 
-        jMenuItem4.setText("Consultar tarjeta");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        itemConsultar.setText("Consultar tarjeta");
+        itemConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                itemConsultarActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem4);
+        jMenu3.add(itemConsultar);
 
-        jMenuItem2.setText("Cancelar tarjeta");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        ItemCancelar.setText("Cancelar tarjeta");
+        ItemCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                ItemCancelarActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem2);
+        jMenu3.add(ItemCancelar);
 
         jMenuBar1.add(jMenu3);
 
@@ -142,7 +142,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void itemSolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSolicitudActionPerformed
         // TODO add your handling code here:
          // Crear una instancia del JInternalFrame
     InterlFrameSolicitud interS = new InterlFrameSolicitud();
@@ -163,13 +163,28 @@ public class FramePrincipal extends javax.swing.JFrame {
     this.pack();
 
         
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_itemSolicitudActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void itemConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConsultarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+            ConsultarTarjeta cons = new ConsultarTarjeta();
+    
+    // Ajustar el tamaño del JInternalFrame para que se ajuste a su contenido
+        cons.pack();
+    
+    // Añadir el JInternalFrame al JDesktopPane
+        jDesktop.add(cons);
+    
+    // Hacer visible el JInternalFrame
+        cons.setVisible(true);
+    
+    // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
+        jDesktop.setPreferredSize(new Dimension(cons.getWidth(), cons.getHeight()));
+        this.pack();
+    // Ajustar 
+    }//GEN-LAST:event_itemConsultarActionPerformed
 
-    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+    private void menuMovimientoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMovimientoMouseClicked
         // TODO add your handling code here:
         InterlFrameMovimiento interM = new InterlFrameMovimiento();
     
@@ -188,9 +203,9 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
     this.pack();
         
-    }//GEN-LAST:event_jMenu2MouseClicked
+    }//GEN-LAST:event_menuMovimientoMouseClicked
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void itemAutorizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAutorizarActionPerformed
         // TODO add your handling code here:
         AutorizacionTarjetas autoT = new AutorizacionTarjetas();
     
@@ -208,9 +223,9 @@ public class FramePrincipal extends javax.swing.JFrame {
     
     // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
         this.pack();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_itemAutorizarActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void ItemCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemCancelarActionPerformed
         // TODO add your handling code here:
                 // TODO add your handling code here:
         CancelarTarjetas canT = new CancelarTarjetas();
@@ -229,7 +244,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     
     // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
         this.pack();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_ItemCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,19 +282,19 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ItemCancelar;
+    private javax.swing.JMenuItem itemAutorizar;
+    private javax.swing.JMenuItem itemConsultar;
+    private javax.swing.JMenuItem itemSolicitud;
     private javax.swing.JDesktopPane jDesktop;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenu menuMovimiento;
     // End of variables declaration//GEN-END:variables
 }
