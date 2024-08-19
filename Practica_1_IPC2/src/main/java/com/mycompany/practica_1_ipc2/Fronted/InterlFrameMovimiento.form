@@ -173,6 +173,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfEstablecimiento">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfEstablecimientoKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfMonto">
     </Component>

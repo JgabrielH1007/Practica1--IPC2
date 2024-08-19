@@ -4,6 +4,8 @@
 
 package com.mycompany.practica_1_ipc2;
 
+import com.mycompany.practica_1_ipc2.Fronted.FramePrincipal;
+
 /**
  *
  * @author gabrielh
@@ -11,6 +13,10 @@ package com.mycompany.practica_1_ipc2;
 public class Practica_1_IPC2 {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FramePrincipal().setVisible(true);
+            }
+        });
     }
 }

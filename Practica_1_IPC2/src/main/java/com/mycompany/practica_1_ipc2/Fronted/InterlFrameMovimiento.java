@@ -88,6 +88,12 @@ public class InterlFrameMovimiento extends javax.swing.JInternalFrame {
             }
         });
 
+        jtfEstablecimiento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfEstablecimientoKeyTyped(evt);
+            }
+        });
+
         jbtGuardar.setText("Guardar");
         jbtGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -232,6 +238,13 @@ public class InterlFrameMovimiento extends javax.swing.JInternalFrame {
     private void jtfDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDescripcionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfDescripcionActionPerformed
+
+    private void jtfEstablecimientoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfEstablecimientoKeyTyped
+        // TODO add your handling code here:
+        if(jtfEstablecimiento.getText().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtfEstablecimientoKeyTyped
     
     private void manejoErrorNoTarjeta(){
         numeroTarjeta = jtfNoTarjeta.getText().trim(); // Obtener el texto y eliminar espacios en blanco extra
