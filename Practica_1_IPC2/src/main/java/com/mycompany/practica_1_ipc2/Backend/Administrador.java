@@ -52,7 +52,7 @@ public class Administrador {
         
         // Definir el formato deseado
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        estado = true;
+            estado = true;
         // Formatear la fecha en el formato deseado
             String fechaFormateada = fechaActual.format(formatter);
             Tarjeta tarjeta = new Tarjeta(this, numeroSoli,fechaFormateada,limite, limite,estado);
@@ -63,7 +63,7 @@ public class Administrador {
             solicitud.actualizarEstadoSolicitud(true);
             numeroTarjeta = tarjeta.getNumeroTarjeta();
             
-        }else {
+            }else {
                 autorizado = false;
                 JOptionPane.showMessageDialog(null,
                         "La solicitud con el número " + numeroSoli + " ya ha sido aprobada o rechazada.",
@@ -72,9 +72,20 @@ public class Administrador {
             }
 
         }else {
+            if (!verificarEstadoSolicitud(numeroSoli)) {
+            Solicitudes solicitud = new Solicitudes("", "", "", "", 0);
+            solicitud.setNumeroSolicitud(Integer.parseInt(numeroSoli));
+            solicitud.actualizarEstadoSolicitud(false);
                 JOptionPane.showMessageDialog(null,
                         "Solicitud Rechazada","SOLICITUD FUE DENEGADA",
                         JOptionPane.INFORMATION_MESSAGE);
+             }else {
+                autorizado = false;
+                JOptionPane.showMessageDialog(null,
+                        "La solicitud con el número " + numeroSoli + " ya ha sido aprobada o rechazada.",
+                        "Solicitud No Válida",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
             }
 
     }

@@ -118,6 +118,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenu4.add(jMenuItem6);
 
         jMenuItem7.setText("Listado de solicitudes");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem7);
 
         jMenuBar1.add(jMenu4);
@@ -270,6 +275,25 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
         this.pack();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        InterlFrameListaSolicitudes listSoli = new InterlFrameListaSolicitudes();
+       
+        listSoli.pack();
+    
+    // Añadir el JInternalFrame al JDesktopPane
+        jDesktop.add(listSoli);
+    
+    // Hacer visible el JInternalFrame
+        listSoli.setVisible(true);
+    
+    // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
+        jDesktop.setPreferredSize(new Dimension(listSoli.getWidth(), listSoli.getHeight()));
+    
+    // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
+        this.pack();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
