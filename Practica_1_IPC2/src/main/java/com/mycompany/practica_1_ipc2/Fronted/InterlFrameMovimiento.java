@@ -212,12 +212,12 @@ public class InterlFrameMovimiento extends javax.swing.JInternalFrame {
                 Administrador admin = new Administrador();
                 admin.establecerMovimiento(numeroTarjeta, descripcion, fecha, codEstablecimiento, monto, movimiento);
             
-                JOptionPane.showMessageDialog(null, "Número de solicitud insertado: " /*solicitud.getNumeroSolicitud()*/, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "Número de solicitud insertado: " /*solicitud.getNumeroSolicitud()*/, "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 if (this != null) {
                     this.dispose();
                 }
             } catch (NumberFormatException e) {
-            // Mostrar un mensaje de error si el formato del salario es incorrecto
+            // Mostrar un mensaje de error si el formato del monto es incorrecto
                 JOptionPane.showMessageDialog(null, "El formato del salario es incorrecto. Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
          }
         }

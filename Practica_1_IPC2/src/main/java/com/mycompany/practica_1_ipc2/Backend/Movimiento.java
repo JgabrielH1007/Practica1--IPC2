@@ -66,12 +66,36 @@ public class Movimiento {
         }
     }
     
-    public void realizarAbono(double Saldo){
-        
+    public void realizarAbono(double saldo){
+        double nuevoSaldo = saldo + monto;
+        if (actualizarSaldo(numero_tarjeta, nuevoSaldo)) {
+            System.out.println("Heho");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el saldo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public void guardarMovimiento(){
-        
+            String sql = "INSERT INTO movimientos (numero_tarjeta, fecha_movimiento, tipo_movimiento, descripcion, establecimiento, monto) VALUES (?, ?, ?, ?, ?, ?)";
+
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        pstmt.setString(1, numero_tarjeta);
+        pstmt.setString(2, fecha); // Convertir String a Date
+        pstmt.setString(3, tipo);
+        pstmt.setString(4, descripcion);
+        pstmt.setString(5, codMovimiento);
+        pstmt.setDouble(6, monto); // Convertir String a double
+
+        int rowsAffected = pstmt.executeUpdate();
+        if (rowsAffected > 0) {
+            JOptionPane.showMessageDialog(null, "Movimiento registrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al registrar el movimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al insertar el movimiento en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
     }
     
 }

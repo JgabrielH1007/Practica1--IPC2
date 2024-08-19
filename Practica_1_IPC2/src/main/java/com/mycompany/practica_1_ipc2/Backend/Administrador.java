@@ -32,7 +32,7 @@ public class Administrador {
     private boolean estado = false;
     private double limite;
     private double saldo;
-    private boolean estadoTar;
+    private boolean estadoTarjeta;
     public Administrador() {
         try {
             connection = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
@@ -179,7 +179,7 @@ public class Administrador {
     public void establecerMovimiento(String numeroTarjeta, String descripcion, String fecha, String codEstablecimiento, String monto, String tipo){
         obtenerInformacionTarjeta(numeroTarjeta);
         double valorMonto = Double.parseDouble(monto);
-        if (!estadoTar) {
+        if (!estadoTarjeta) {
         JOptionPane.showMessageDialog(null, "La tarjeta está desactivada. No se pueden realizar movimientos.", "Tarjeta Inactiva", JOptionPane.WARNING_MESSAGE);
         
         }else{
@@ -197,42 +197,99 @@ public class Administrador {
                     JOptionPane.INFORMATION_MESSAGE); 
                 }
             }else if (tipo.equals("Abono")){
+                double abono = saldo+ valorMonto;
+                if(abono <= limite){
+                    mov.realizarAbono(saldo);
+                    mov.guardarMovimiento();
+                }else{
+                    JOptionPane.showMessageDialog(null,
+                    "El abono no es valido, tu deuda es de: "+(limite-saldo),
+                    "MOVIMIENTO NO VALIDO",
+                    JOptionPane.INFORMATION_MESSAGE); 
+                }
             
             }
         }
     }
     
-    public void obtenerInformacionTarjeta(String numeroTarjeta){
-        String sql = "SELECT numero_tarjeta, saldo, limite, estado_tarjeta FROM tarjetas numero_tarjeta = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Establecer el valor del parámetro en la consulta SQL
-            pstmt.setString(1, numeroTarjeta);
+    public void obtenerInformacionTarjeta(String numeroTarjeta) {
+    // Corrección de la consulta SQL
+    String sql = "SELECT numero_tarjeta, saldo, limite, estado_tarjeta FROM tarjetas WHERE numero_tarjeta = ?";
+    
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        // Establecer el valor del parámetro en la consulta SQL
+        pstmt.setString(1, numeroTarjeta);
 
-            // Ejecutar la consulta
-            ResultSet rs = pstmt.executeQuery();
+        // Ejecutar la consulta
+        ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                // Obtener los datos de la tupla
-                String numeroTar = rs.getString("numero_tarjeta");
-                saldo = rs.getDouble("saldo");
-                limite = rs.getDouble("limite");
-                estadoTar = rs.getBoolean("estado_tarjeta");
-                
+        if (rs.next()) {
+            // Obtener los datos de la tupla
+            String numeroTar = rs.getString("numero_tarjeta");
+            saldo = rs.getDouble("saldo");
+            limite = rs.getDouble("limite");
+            estadoTarjeta = rs.getBoolean("estado_tarjeta");
+            
+            // Aquí puedes utilizar estos valores como lo necesites
+            System.out.println("Número de Tarjeta: " + numeroTar);
+            System.out.println("Saldo: " + saldo);
+            System.out.println("Límite: " + limite);
+            System.out.println("Estado de la Tarjeta: " + estadoTarjeta);
+        } else {
+            JOptionPane.showMessageDialog(null,
+            "No se encontró tarjeta con el número: " + numeroTarjeta,
+            "Tarjeta No Existe",
+            JOptionPane.INFORMATION_MESSAGE);            
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null,
+        "Error al consultar la base de datos.",
+        "Error",
+        JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
+
+    public void actualizarEstadoTarjeta(String numeroTarjeta) {
+        obtenerInformacionTarjeta(numeroTarjeta);
+
+        if (verificarDeuda()) {
+            if (estadoTarjeta) {
+                String fechaActual = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String sql = "UPDATE tarjetas SET estado_tarjeta = ?, fecha_estado = ? WHERE numero_tarjeta = ?";
+
+                try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                    pstmt.setBoolean(1, false);
+                    pstmt.setString(2, fechaActual);
+                    pstmt.setString(3, numeroTarjeta);
+
+                        int rowsAffected = pstmt.executeUpdate();
+                        if (rowsAffected > 0) {
+                            mostrarMensaje("Tarjeta cancelada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            mostrarMensaje("No se pudo cancelar la tarjeta.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                } catch (SQLException e) {
+                    mostrarMensaje("Error al actualizar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                }
             } else {
-                JOptionPane.showMessageDialog(null,
-                "No se encontró tarjeta " + numeroTarjeta,
-                "Tarjeta No Existe",
-                JOptionPane.INFORMATION_MESSAGE);            
+                mostrarMensaje("Tarjeta ya fue cancelada", "Tarjeta cancelada", JOptionPane.INFORMATION_MESSAGE);
             }
-
-        } catch (SQLException e) {
-            System.out.println("Error al consultar a la DB");
-            e.printStackTrace();
+        } else {
+            mostrarMensaje("La tarjeta tiene una deuda de: " +(limite-saldo), "Deuda Pendiente", JOptionPane.WARNING_MESSAGE);
         }
     }
-        
 
+    private void mostrarMensaje(String mensaje, String titulo, int tipoMensaje) {
+        JOptionPane.showMessageDialog(null, mensaje, titulo, tipoMensaje);
+    }
     
-    
+    private boolean verificarDeuda() {
+        return limite - saldo <= 0;
+    }
+
+
     
 }

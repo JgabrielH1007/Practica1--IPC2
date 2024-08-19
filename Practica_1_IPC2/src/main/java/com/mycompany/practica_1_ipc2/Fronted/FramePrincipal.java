@@ -95,6 +95,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenu3.add(jMenuItem4);
 
         jMenuItem2.setText("Cancelar tarjeta");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem2);
 
         jMenuBar1.add(jMenu3);
@@ -190,20 +195,41 @@ public class FramePrincipal extends javax.swing.JFrame {
         AutorizacionTarjetas autoT = new AutorizacionTarjetas();
     
     // Ajustar el tamaño del JInternalFrame para que se ajuste a su contenido
-    autoT.pack();
+        autoT.pack();
     
     // Añadir el JInternalFrame al JDesktopPane
-    jDesktop.add(autoT);
+        jDesktop.add(autoT);
     
     // Hacer visible el JInternalFrame
-    autoT.setVisible(true);
+        autoT.setVisible(true);
     
     // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
-    jDesktop.setPreferredSize(new Dimension(autoT.getWidth(), autoT.getHeight()));
+        jDesktop.setPreferredSize(new Dimension(autoT.getWidth(), autoT.getHeight()));
     
     // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
-    this.pack();
+        this.pack();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+                // TODO add your handling code here:
+        CancelarTarjetas canT = new CancelarTarjetas();
+    
+    // Ajustar el tamaño del JInternalFrame para que se ajuste a su contenido
+        canT.pack();
+    
+    // Añadir el JInternalFrame al JDesktopPane
+        jDesktop.add(canT);
+    
+    // Hacer visible el JInternalFrame
+        canT.setVisible(true);
+    
+    // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
+        jDesktop.setPreferredSize(new Dimension(canT.getWidth(), canT.getHeight()));
+    
+    // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
+        this.pack();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
