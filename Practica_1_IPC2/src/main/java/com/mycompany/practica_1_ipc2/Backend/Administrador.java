@@ -30,7 +30,9 @@ public class Administrador {
     private boolean autorizado;
     private String numeroTarjeta;
     private boolean estado = false;
-    
+    private double limite;
+    private double saldo;
+    private boolean estadoTar;
     public Administrador() {
         try {
             connection = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
@@ -40,8 +42,7 @@ public class Administrador {
             e.printStackTrace();
         }
     }
-    
-    
+
     
     public void autorizarTarjetas(double salario, String tipo, String numeroSoli){
         double limite = salario*0.60;
@@ -78,7 +79,7 @@ public class Administrador {
 
     }
         
-        public boolean verificarEstadoSolicitud(String numeroSoli) {
+    public boolean verificarEstadoSolicitud(String numeroSoli) {
         String query = "SELECT estado_solicitud FROM solicitud_nueva WHERE numero_solicitud = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, numeroSoli);
@@ -94,7 +95,6 @@ public class Administrador {
         }
         return false;
     }
-
     
     public boolean verificarSalario(double salario, double limite, String tipo){
         limite = salario*0.60;
@@ -151,9 +151,7 @@ public class Administrador {
     public String getNumeroTarjeta() {
         return numeroTarjeta;
     }
-    
-    
-    
+  
     public boolean isAutorizado() {
         return autorizado;
     }
@@ -178,6 +176,62 @@ public class Administrador {
         return PASSWORD;
     }
     
+    public void establecerMovimiento(String numeroTarjeta, String descripcion, String fecha, String codEstablecimiento, String monto, String tipo){
+        obtenerInformacionTarjeta(numeroTarjeta);
+        double valorMonto = Double.parseDouble(monto);
+        if (!estadoTar) {
+        JOptionPane.showMessageDialog(null, "La tarjeta está desactivada. No se pueden realizar movimientos.", "Tarjeta Inactiva", JOptionPane.WARNING_MESSAGE);
+        
+        }else{
+            Movimiento mov = new Movimiento(this, valorMonto, numeroTarjeta, fecha, tipo, descripcion, codEstablecimiento);
+                
+            
+            if(tipo.equals("Cargo")){
+                if(saldo >= valorMonto){
+                    mov.realizarCargo(saldo);
+                    mov.guardarMovimiento();
+                }else{
+                    JOptionPane.showMessageDialog(null,
+                    "No tienes saldo sufiente para realizar la operacion ",
+                    "MOVIMIENTO NO VALIDO",
+                    JOptionPane.INFORMATION_MESSAGE); 
+                }
+            }else if (tipo.equals("Abono")){
+            
+            }
+        }
+    }
+    
+    public void obtenerInformacionTarjeta(String numeroTarjeta){
+        String sql = "SELECT numero_tarjeta, saldo, limite, estado_tarjeta FROM tarjetas numero_tarjeta = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Establecer el valor del parámetro en la consulta SQL
+            pstmt.setString(1, numeroTarjeta);
+
+            // Ejecutar la consulta
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // Obtener los datos de la tupla
+                String numeroTar = rs.getString("numero_tarjeta");
+                saldo = rs.getDouble("saldo");
+                limite = rs.getDouble("limite");
+                estadoTar = rs.getBoolean("estado_tarjeta");
+                
+            } else {
+                JOptionPane.showMessageDialog(null,
+                "No se encontró tarjeta " + numeroTarjeta,
+                "Tarjeta No Existe",
+                JOptionPane.INFORMATION_MESSAGE);            
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al consultar a la DB");
+            e.printStackTrace();
+        }
+    }
+        
+
     
     
     

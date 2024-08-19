@@ -229,8 +229,6 @@ public class InterlFrameSolicitud extends javax.swing.JInternalFrame {
             // Convertir el salario a double
            double valorSalario = Double.parseDouble(salario);
 
-         
-            
              switch (tipoSeleccionado) {
                 case "Nacional":
                    tipo = "Nacional";
