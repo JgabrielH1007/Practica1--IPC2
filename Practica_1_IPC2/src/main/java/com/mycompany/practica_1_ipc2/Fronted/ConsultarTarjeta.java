@@ -29,7 +29,6 @@ public class ConsultarTarjeta extends javax.swing.JInternalFrame {
     /**
      * Creates new form ConsultarTarjeta
      */
-    private Connection connection;
     private Consultor cons;
     public ConsultarTarjeta() {
         super("CONSULTAR TARJETA", false, true, false, true);
@@ -179,8 +178,8 @@ public class ConsultarTarjeta extends javax.swing.JInternalFrame {
             width = Math.max(comp.getPreferredSize().width, width);
         }
         column.setPreferredWidth(width + jTable1.getIntercellSpacing().width);
+        }
     }
-}
 
     private void mostrarMensaje(String mensaje, String titulo, int tipo) {
         JOptionPane.showMessageDialog(this, mensaje, titulo, tipo);

@@ -107,6 +107,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenu4.setText("Reportes");
 
         jMenuItem5.setText("Estado de cuenta");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem5);
 
         jMenuItem6.setText("Listado de tarjetas");
@@ -245,6 +250,26 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
         this.pack();
     }//GEN-LAST:event_ItemCancelarActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        InterlFrameEstadoCuenta eCuenta = new InterlFrameEstadoCuenta();
+    
+    // Ajustar el tamaño del JInternalFrame para que se ajuste a su contenido
+        eCuenta.pack();
+    
+    // Añadir el JInternalFrame al JDesktopPane
+        jDesktop.add(eCuenta);
+    
+    // Hacer visible el JInternalFrame
+        eCuenta.setVisible(true);
+    
+    // Ajustar el tamaño del JDesktopPane al tamaño del JInternalFrame
+        jDesktop.setPreferredSize(new Dimension(eCuenta.getWidth(), eCuenta.getHeight()));
+    
+    // Ajustar el tamaño del frame principal al tamaño del JDesktopPane
+        this.pack();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments

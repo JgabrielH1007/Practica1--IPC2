@@ -4,6 +4,10 @@
  */
 package com.mycompany.practica_1_ipc2.Fronted;
 
+import com.mycompany.practica_1_ipc2.Backend.ConsultarEstadoDeCuenta;
+import java.math.BigDecimal;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author gabrielh
@@ -14,7 +18,10 @@ public class InterlFrameEstadoCuenta extends javax.swing.JInternalFrame {
      * Creates new form InterlFrameEstadoCuenta
      */
     public InterlFrameEstadoCuenta() {
+        super("ESTADO DE CUENTA", false, true, false, true);
         initComponents();
+        actualizarFiltros();
+        pack();
     }
 
     /**
@@ -26,21 +33,294 @@ public class InterlFrameEstadoCuenta extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jcbNoTarjeta = new javax.swing.JCheckBox();
+        jcbTipo = new javax.swing.JCheckBox();
+        jcbSaldo = new javax.swing.JCheckBox();
+        jcbInteres = new javax.swing.JCheckBox();
+        jtfMontoSaldo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jcbTipos = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jtfMontoInteres = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jtfNumeroTarjeta = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jbtBuscar = new javax.swing.JButton();
+
+        jLabel1.setText("Filtros:");
+
+        jcbNoTarjeta.setText("No. Tarjeta");
+        jcbNoTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbNoTarjetaActionPerformed(evt);
+            }
+        });
+
+        jcbTipo.setText("Tipo");
+        jcbTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbTipoActionPerformed(evt);
+            }
+        });
+
+        jcbSaldo.setText("Saldo");
+        jcbSaldo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbSaldoActionPerformed(evt);
+            }
+        });
+
+        jcbInteres.setText("Interés");
+        jcbInteres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbInteresActionPerformed(evt);
+            }
+        });
+
+        jtfMontoSaldo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfMontoSaldoActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Saldos mayores a:");
+
+        jLabel4.setText("Tipos:");
+
+        jcbTipos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ninguno", "Nacional", "Internacional", "Regional" }));
+
+        jLabel5.setText("Ingrese número de tarjetas");
+
+        jtfMontoInteres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfMontoInteresActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Interese mayores a:");
+
+        jtfNumeroTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfNumeroTarjetaActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "No. Tarjeta", "Tipo", "Nombre", "Dirección", "Fecha movi...", "Tipo movi...", "Descripción", "Establecimiento", "Monto", "Monto total", "Intereses", "Saldo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTable1);
+
+        jbtBuscar.setText("Buscar");
+        jbtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtBuscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 807, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(45, 45, 45)
+                                .addComponent(jcbNoTarjeta)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jcbTipo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jcbSaldo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jcbInteres))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfMontoSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel6)
+                                .addGap(26, 26, 26)
+                                .addComponent(jtfMontoInteres, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(27, 27, 27)
+                                .addComponent(jcbTipos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtfNumeroTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbtBuscar)
+                        .addGap(38, 38, 38))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jcbNoTarjeta)
+                    .addComponent(jcbTipo)
+                    .addComponent(jcbSaldo)
+                    .addComponent(jcbInteres))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtfMontoSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jtfMontoInteres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jcbTipos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)
+                            .addComponent(jtfNumeroTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(57, 57, 57)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jbtBuscar)))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jtfMontoSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfMontoSaldoActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jtfMontoSaldoActionPerformed
+
+    private void jtfMontoInteresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfMontoInteresActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfMontoInteresActionPerformed
+
+    private void jtfNumeroTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNumeroTarjetaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfNumeroTarjetaActionPerformed
+
+    private void jcbInteresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbInteresActionPerformed
+        // TODO add your handling code here:
+        actualizarFiltros();
+    }//GEN-LAST:event_jcbInteresActionPerformed
+
+    private void jcbNoTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbNoTarjetaActionPerformed
+        // TODO add your handling code here:
+        actualizarFiltros();
+    }//GEN-LAST:event_jcbNoTarjetaActionPerformed
+
+    private void jcbTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTipoActionPerformed
+        // TODO add your handling code here:
+        actualizarFiltros();
+    }//GEN-LAST:event_jcbTipoActionPerformed
+
+    private void jcbSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbSaldoActionPerformed
+        // TODO add your handling code here:
+        actualizarFiltros();
+    }//GEN-LAST:event_jcbSaldoActionPerformed
+
+    private void jbtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBuscarActionPerformed
+        // TODO add your handling code here:
+        // Validar los campos de texto
+        String mensajeError = validarEntradas();
+    
+        if (mensajeError != null) {
+            JOptionPane.showMessageDialog(this, mensajeError, "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución si hay errores de validación
+        }
+    
+        // Crear el objeto para obtener datos
+        ConsultarEstadoDeCuenta dataFetcher = new ConsultarEstadoDeCuenta();
+        dataFetcher.obtenerDatos(jTable1, jcbNoTarjeta, jcbTipo, jcbSaldo, jcbInteres, jtfNumeroTarjeta, jcbTipos, jtfMontoSaldo, jtfMontoInteres);
+        jTable1.revalidate();
+        jTable1.repaint();
+        this.pack();
+    }//GEN-LAST:event_jbtBuscarActionPerformed
+    
+    private String validarEntradas() {
+    // Verificar el campo de saldo
+        if (jcbSaldo.isSelected() && !jtfMontoSaldo.getText().trim().isEmpty()) {
+            if (!isNumeric(jtfMontoSaldo.getText().trim())) {
+                return "El monto de saldo debe ser un número válido.";
+            }
+        }
+
+    // Verificar el campo de interés
+        if (jcbInteres.isSelected() && !jtfMontoInteres.getText().trim().isEmpty()) {
+            if (!isNumeric(jtfMontoInteres.getText().trim())) {
+                return "El monto de interés debe ser un número válido.";
+            }
+        }
+
+    // Validaciones adicionales si es necesario (e.g., número de tarjeta)
+        if (jcbNoTarjeta.isSelected() && jtfNumeroTarjeta.getText().trim().isEmpty()) {
+            return "El número de tarjeta no puede estar vacío.";
+        }
+
+        return null; // No hay errores
+    }
+
+    private boolean isNumeric(String str) {
+        try {
+            new BigDecimal(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    private void actualizarFiltros() {
+        jtfNumeroTarjeta.setEnabled(jcbNoTarjeta.isSelected());
+        jcbTipos.setEnabled(jcbTipo.isSelected());
+        jtfMontoSaldo.setEnabled(jcbSaldo.isSelected());
+        jtfMontoInteres.setEnabled(jcbInteres.isSelected());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtBuscar;
+    private javax.swing.JCheckBox jcbInteres;
+    private javax.swing.JCheckBox jcbNoTarjeta;
+    private javax.swing.JCheckBox jcbSaldo;
+    private javax.swing.JCheckBox jcbTipo;
+    private javax.swing.JComboBox<String> jcbTipos;
+    private javax.swing.JTextField jtfMontoInteres;
+    private javax.swing.JTextField jtfMontoSaldo;
+    private javax.swing.JTextField jtfNumeroTarjeta;
     // End of variables declaration//GEN-END:variables
 }
